@@ -20,6 +20,9 @@ namespace Domain.IO
 
             var matches = Regex.Match(firstLine, TurtleRegex);
 
+            if (matches.Length < 1)
+                throw new Exception($"Turtle info was not parsed correctly, please check {args[0]}");
+
             string[] coordinates = matches.Groups[1].Value.Split(',');
             string direction = matches.Groups[3].Value.ToLower();
 
@@ -37,6 +40,9 @@ namespace Domain.IO
             string secondLine = ReadFile(args[0], 1);
 
             var match = Regex.Match(secondLine, ExitRegex);
+
+            if (match.Length < 1)
+                throw new Exception($"Exit info was not parsed correctly, please check {args[0]}");
 
             string[] coordinates = match.Value.Split(',');
 
@@ -56,6 +62,9 @@ namespace Domain.IO
 
             var matches = Regex.Matches(thirdLine, MinesRegex);
 
+            if (matches.Count < 1)
+                throw new Exception($"Mines info was not parsed correctly, please check {args[0]}");
+
             foreach (var match in matches)
             {
                 var coordinate = match.ToString().Split(',');
@@ -70,6 +79,9 @@ namespace Domain.IO
             string firstLine = ReadFile(args[1], 0);
 
             var matches = Regex.Match(firstLine, MovesRegex);
+
+            if (matches.Length < 1)
+                throw new Exception($"Moves info was not parsed correctly, please check {args[1]}");
 
             string[] moves = matches.Groups[2].Value.Split(',');
 
@@ -86,9 +98,12 @@ namespace Domain.IO
         {
             string fourthLine = ReadFile(args[0], 3);
 
-            var size = Regex.Match(fourthLine, GridSizeRegex);
+            var dimensions = Regex.Match(fourthLine, GridSizeRegex);
 
-            string[] coordinate = size.Value.Split(',');
+            if (dimensions.Length < 1)
+                throw new Exception($"Map info was not parsed correctly, please check {args[0]}");
+
+            string[] coordinate = dimensions.Value.Split(',');
 
             return new Grid(int.Parse(coordinate[0]), int.Parse(coordinate[1]));
         }
@@ -107,8 +122,9 @@ namespace Domain.IO
                 }
                 catch(Exception e)
                 {
-                    Logger.Log($"Error while reading {fileName}", ConsoleColor.Red);
+                    Logger.Log($"Error while reading {fileName} line {lineNmber}", ConsoleColor.Red);
                     Logger.Log($"{e.StackTrace}", ConsoleColor.Red);
+                    return null;
                 }                
             }
             Logger.Log($"{fileName} not found, please ensure it exists in current directory", ConsoleColor.Red);

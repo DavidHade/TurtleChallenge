@@ -26,7 +26,7 @@ namespace UnitTests
         [Test]
         public void SimulateNumberOfRounds()
         {
-            int rounds = 1000;            
+            int rounds = 100;            
 
             for (int i = 0; i < rounds; i++)
             {
