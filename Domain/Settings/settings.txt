@@ -1,0 +1,4 @@
+The quick green turtle will start at 4,7 facing north
+The lucky exit for escape will be placed at 4,1
+The big scary mines will be scattered across 1,1|0,4|2,5|3,4
+The size of the field will be 10,12
